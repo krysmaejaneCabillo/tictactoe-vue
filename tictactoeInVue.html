@@ -17,7 +17,7 @@
                 <h1
                     class="text-center font-bold text-5xl font-serif italic mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 from-2% to-red-600 ">
                     Tic Tac Toe!</h1>
-                <div class="grid grid-cols-3 gap-2 p-3 rounded-lg   ">
+                <div class="grid grid-cols-3 gap-2 p-3 rounded-lg">
 
                     <div v-for="(row, rowIndex) in boardCells">
                         <div v-for="(cell,colIndex) in row" @click="cellClick(rowIndex,colIndex)"
