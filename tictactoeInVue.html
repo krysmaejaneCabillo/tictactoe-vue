@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Document</title>
+</head>
+
+<body class="bg-gray-900">
+    <div id="app">
+        <div class="flex items-center justify-center min-h-screen">
+
+            <div class="flex-col items-center ">
+                <h1
+                    class="text-center font-bold text-5xl font-serif italic mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 from-2% to-red-600 ">
+                    Tic Tac Toe!</h1>
+                <div class="grid grid-cols-3 gap-2 p-3 rounded-lg   ">
+
+                    <div v-for="(row, rowIndex) in boardCells">
+                        <div v-for="(cell,colIndex) in row" @click="cellClick(rowIndex,colIndex)"
+                            class="w-28 h-28 bg-gray-800 text-4xl font-extrabold flex items-center justify-center   rounded-lg hover:bg-gray-700 cursor-pointer hover:scale-110 border-3 transition mt-2"
+                            :class="{'text-red-600': cell === 'X', 'text-indigo-600': cell === 'O'}">
+                            {{cell}}
+
+                        </div>
+                    </div>
+                </div>
+
+                <p class="mt-4 text-4xl  text-red-600 font-bold text-center"></p>
+
+                <div>
+                    <h1
+                        class="text-center font-bold text-3xl font-sans italic mb-5 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 from-2% to-red-600">
+                        {{message}}</h1>
+                </div>
+
+                <!-- <div class="flex items-center justify-center">
+                    <button class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg items-center cursor-pointer"
+                        @click="resetBtn">
+                        Reset Game</button>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    boardCells: [
+                        ["", "", ""],
+                        ["", "", ""],
+                        ["", "", ""]
+                    ],
+
+                    currentPlayer: "X",
+                    message: "Lets play!"
+
+                }
+            },
+            methods: {
+                cellClick(rowIndex, colIndex) {
+                    if (this.boardCells[rowIndex][colIndex] === "") {
+                        this.boardCells[rowIndex][colIndex] = this.currentPlayer;
+
+                        if (this.isWinner(this.currentPlayer)) {
+                            this.message = `Player ${this.currentPlayer} wins`;
+                            setTimeout(this.resetBtn, 2800)
+                        
+                        }else if (this.isDraw()) {
+                            this.message = `It's a Draw`;
+                            setTimeout(this.resetBtn, 2500)
+                        
+                        }
+                        else {
+                            this.currentPlayer = this.currentPlayer === "X" ? "O" : "X";
+                            this.message = `Player ${this.currentPlayer}'s turn`
+                        }
+                    }
+                },
+                isWinner(player) {
+                    const b = this.boardCells;
+
+                    for (let i = 0; i < b.length; i++) {
+                        if (b[i][0] === player && b[i][1] === player && b[i][2] === player) return true;
+                        if (b[0][i] === player && b[1][i] === player && b[2][i] === player) return true;
+                    }
+                    if (b[0][0] === player && b[1][1] === player && b[2][2] === player) return true;
+                    if (b[0][2] === player && b[1][1] === player && b[2][0] === player) return true;
+                },
+                resetBtn() {
+                    this.boardCells = [
+                        ["", "", ""],
+                        ["", "", ""],
+                        ["", "", ""]
+                    ];
+                    this.currentPlayer = "X";
+                    this.message = "Lets Play!";
+                },
+                isDraw() {
+
+                    let allClicked = false
+
+                    for (let row of this.boardCells) {
+                        for (let cell of row) {
+                            if (cell === "") {
+                               allClicked = true
+                            }
+                        }
+                    }
+                   if (!allClicked && !this.isWinner("X")  && !this.isWinner("O")){
+                    return true;
+                   }else{
+                    return false;
+                   }
+                }
+            }
+        }).mount("#app")
+
+    </script>
+
+</body>
+
+</html>
